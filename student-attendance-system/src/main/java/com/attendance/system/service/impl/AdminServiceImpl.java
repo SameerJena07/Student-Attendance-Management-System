@@ -450,3 +450,152 @@ public class AdminServiceImpl implements AdminService {
                 student.getClassEntity() != null ? student.getClassEntity().getSection() : null
         );
     }
+
+    @Override
+    @Transactional
+    public StudentResponse createStudent(StudentRequest req) {
+        Student student = new Student();
+        student.setName(req.getName());
+        student.setEmail(req.getEmail());
+        student.setPhone(req.getPhone());
+        student.setParentEmail(req.getParentEmail());
+        student.setRollNumber(req.getRollNumber());
+        student.setPassword(passwordEncoder.encode(req.getPassword()));
+        student.setActive(true);
+        
+        // ✅ FIX: Use Enum if Role is defined as Enum in Student entity
+        student.setRole(User.Role.STUDENT); 
+
+        ClassEntity classEntity = classRepository.findById(req.getClassId())
+                .orElseThrow(() -> new RuntimeException("Class not found"));
+        student.setClassEntity(classEntity);
+
+        studentRepository.save(student);
+
+        return new StudentResponse(
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
+                student.getPhone(),
+                student.getRollNumber(),
+                student.getParentEmail(),
+                classEntity.getId(),
+                classEntity.getClassName(),
+                classEntity.getSection()
+        );
+    }
+
+    @Override
+    @Transactional
+    public StudentResponse updateStudent(Long studentId, UpdateStudentRequest request) {
+        Student student = studentRepository.findByIdAndActiveTrue(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        student.setName(request.getName());
+        student.setPhone(request.getPhone());
+        student.setParentEmail(request.getParentEmail());
+        student.setRollNumber(request.getRollNumber());
+        student.setEmail(request.getEmail());
+
+        if (request.getClassId() != null) {
+            ClassEntity classEntity = classRepository.findById(request.getClassId())
+                    .orElseThrow(() -> new RuntimeException("Class not found"));
+            student.setClassEntity(classEntity);
+        }
+
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            student.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        studentRepository.save(student);
+
+        return new StudentResponse(
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
+                student.getPhone(),
+                student.getRollNumber(),
+                student.getParentEmail(),
+                student.getClassEntity() != null ? student.getClassEntity().getId() : null,
+                student.getClassEntity() != null ? student.getClassEntity().getClassName() : null,
+                student.getClassEntity() != null ? student.getClassEntity().getSection() : null
+        );
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+        student.setActive(false); 
+        studentRepository.save(student);
+    }
+    
+    @Override
+    public List<ClassEntity> getAllClasses() {
+        return classRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public ClassEntity createClass(ClassEntity classEntity) {
+        return classRepository.save(classEntity);
+    }
+
+    @Override
+    @Transactional
+    public ClassEntity updateClass(Long classId, ClassEntity classEntity) {
+        ClassEntity existing = classRepository.findById(classId)
+                .orElseThrow(() -> new RuntimeException("Class not found"));
+
+        existing.setClassName(classEntity.getClassName());
+        existing.setSection(classEntity.getSection());
+        existing.setAcademicYear(classEntity.getAcademicYear());
+        existing.setSemester(classEntity.getSemester());
+
+        return classRepository.save(existing);
+    }
+
+    @Override
+    @Transactional
+    public void deleteClass(Long classId) {
+        classRepository.deleteById(classId);
+    }
+
+    private UserInfoResponse convertToUserInfoResponse(Teacher teacher) {
+        UserInfoResponse response = new UserInfoResponse();
+        response.setId(teacher.getId());
+        response.setEmail(teacher.getEmail());
+        response.setName(teacher.getName());
+        response.setPhone(teacher.getPhone());
+        if (teacher.getRole() != null) {
+            response.setRole(teacher.getRole().toString());
+        }
+        response.setTeacherId(teacher.getTeacherId());
+        response.setDepartment(teacher.getDepartment());
+        return response;
+    }
+
+    private UserInfoResponse convertToUserInfoResponse(Student student) {
+        UserInfoResponse response = new UserInfoResponse();
+        response.setId(student.getId());
+        response.setEmail(student.getEmail());
+        response.setName(student.getName());
+        response.setPhone(student.getPhone());
+        if (student.getRole() != null) {
+            response.setRole(student.getRole().toString());
+        }
+        response.setRollNumber(student.getRollNumber());
+        response.setParentEmail(student.getParentEmail());
+
+        if (student.getClassEntity() != null) {
+            response.setClassInfo(new UserInfoResponse.ClassInfo(
+                    student.getClassEntity().getId(),
+                    student.getClassEntity().getClassName(),
+                    student.getClassEntity().getSection(),
+                    student.getClassEntity().getAcademicYear()
+            ));
+        }
+        return response;
+    }
+}
