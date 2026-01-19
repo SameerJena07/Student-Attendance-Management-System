@@ -86,7 +86,10 @@ export class CoursesComponent implements OnInit {
 
   courseForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private adminService: AdminService) {
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+  ) {
     this.courseForm = this.fb.group({
       courseCode: ['', Validators.required],
       courseName: ['', Validators.required],
@@ -161,7 +164,7 @@ export class CoursesComponent implements OnInit {
     this.filteredCourses = this.courses.filter(
       (c) =>
         c.courseName.toLowerCase().includes(term) ||
-        c.courseCode.toLowerCase().includes(term)
+        c.courseCode.toLowerCase().includes(term),
     );
   }
 
@@ -329,7 +332,7 @@ export class CoursesComponent implements OnInit {
 
   private markFormGroupTouched(): void {
     Object.values(this.courseForm.controls).forEach((control) =>
-      control.markAsTouched()
+      control.markAsTouched(),
     );
   }
 
