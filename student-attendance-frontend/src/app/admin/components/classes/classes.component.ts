@@ -64,7 +64,10 @@ export class ClassesComponent implements OnInit {
     '8th Semester',
   ];
 
-  constructor(private fb: FormBuilder, private adminService: AdminService) {
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+  ) {
     this.classForm = this.fb.group({
       className: ['', Validators.required],
       section: ['', Validators.required],
@@ -112,7 +115,7 @@ export class ClassesComponent implements OnInit {
       (c) =>
         c.className.toLowerCase().includes(term) ||
         c.section.toLowerCase().includes(term) ||
-        c.academicYear.toLowerCase().includes(term)
+        c.academicYear.toLowerCase().includes(term),
     );
   }
 
