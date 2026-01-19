@@ -193,7 +193,6 @@
         </div>
     </div>
 
-    <!-- Confirmation Dialog -->
     <app-confirmation-dialog [show]="showConfirmation" title="Delete Student"
         [message]="'Are you sure you want to delete ' + (studentToDelete?.name || 'this student') + '?'"
         confirmText="Delete" cancelText="Cancel" type="danger" (confirmed)="onDeleteConfirmed()"
