@@ -124,7 +124,6 @@
         </div>
     </div>
 
-    <!-- Confirmation Dialog -->
     <app-confirmation-dialog [show]="showConfirmation"
         [title]="(currentAction === 'approve' ? 'Approve' : 'Reject') + ' Request'" [message]="getConfirmationMessage()"
         [confirmText]="currentAction === 'approve' ? 'Approve' : 'Reject'" [cancelText]="'Cancel'"
