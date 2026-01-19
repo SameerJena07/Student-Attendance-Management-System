@@ -181,7 +181,7 @@
 
 .course-code {
   color: #3b82f6;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .course-description {
@@ -325,132 +325,138 @@
 /* ... existing css ... */
 
 .student-select-group {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #eee;
-    margin-top: 10px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  margin-top: 10px;
 }
 
 .student-checkbox-list {
-    max-height: 200px; /* Scrollable height */
-    overflow-y: auto;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 10px;
+  max-height: 200px; /* Scrollable height */
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(200px, 1fr)
+  ); /* Responsive grid */
+  gap: 10px;
 }
 
 .checkbox-item label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    font-weight: normal;
-    margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: normal;
+  margin: 0;
 }
 
 .checkbox-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 .checkbox-item small {
-    color: #666;
+  color: #666;
 }
 
 .select-all {
-    grid-column: 1 / -1; /* Span full width */
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-    font-weight: bold;
+  grid-column: 1 / -1; /* Span full width */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 /* Container relative positioning is key */
 .custom-dropdown-container {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 /* The Box that looks like an input */
 .dropdown-trigger {
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    user-select: none; /* Prevent text selection on double click */
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  user-select: none; /* Prevent text selection on double click */
 }
 
 .dropdown-trigger:hover {
-    border-color: #aaa;
+  border-color: #aaa;
 }
 
 .selected-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333;
 }
 
 /* The actual list that appears */
 .dropdown-list {
-    position: absolute;
-    top: 100%; /* Push it right below the trigger */
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 0 0 4px 4px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000; /* Ensure it floats above other form elements */
-    margin-top: 2px;
+  position: absolute;
+  top: 100%; /* Push it right below the trigger */
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000; /* Ensure it floats above other form elements */
+  margin-top: 2px;
 }
 
 .list-scroll-area {
-    max-height: 200px;
-    overflow-y: auto;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 /* Checkbox Styling */
 .checkbox-item {
-    padding: 8px 12px;
-    border-bottom: 1px solid #f1f1f1;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .checkbox-item:hover {
-    background-color: #f8f9fa;
+  background-color: #f8f9fa;
 }
 
 .checkbox-item label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    cursor: pointer;
-    font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  cursor: pointer;
+  font-weight: normal;
 }
 
 .checkbox-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 .select-all {
-    background-color: #f1f3f5;
-    font-weight: 600;
-    border-bottom: 1px solid #ddd;
+  background-color: #f1f3f5;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
 }
 
 /* Invisible overlay to catch clicks outside */
 .dropdown-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 999;
-    background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: transparent;
 }
