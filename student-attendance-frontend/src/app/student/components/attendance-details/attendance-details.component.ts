@@ -85,11 +85,11 @@ export class AttendanceDetailsComponent implements OnInit {
         record.courseName.toLowerCase().includes(term) ||
         record.courseCode.toLowerCase().includes(term) ||
         record.status.toLowerCase().includes(term) ||
-        record.date.includes(term)
+        record.date.includes(term),
     );
   }
 
-  // --- UI Helpers ---
+
   getStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
       case 'PRESENT':
