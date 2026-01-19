@@ -74,8 +74,3 @@ import { AttendanceDetailsComponent } from './student/components/attendance-deta
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-
-
-
-
