@@ -53,7 +53,7 @@ export class AttendanceReportsComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private adminService: AdminService // ✅ Inject AdminService
+    private adminService: AdminService, // ✅ Inject AdminService
   ) {
     this.filterForm = this.formBuilder.group({
       class: ['All'],
@@ -112,14 +112,14 @@ export class AttendanceReportsComponent implements OnInit {
     // Filter by Class
     if (filters.class !== 'All') {
       filtered = filtered.filter(
-        (report) => report.className === filters.class
+        (report) => report.className === filters.class,
       );
     }
 
     // Filter by Course
     if (filters.course !== 'All') {
       filtered = filtered.filter(
-        (report) => report.courseName === filters.course
+        (report) => report.courseName === filters.course,
       );
     }
 
@@ -186,7 +186,7 @@ export class AttendanceReportsComponent implements OnInit {
     if (this.filteredReports.length === 0) return 0;
     const totalPercentage = this.filteredReports.reduce(
       (sum, report) => sum + report.attendancePercentage,
-      0
+      0,
     );
     return (
       Math.round((totalPercentage / this.filteredReports.length) * 10) / 10
@@ -196,7 +196,7 @@ export class AttendanceReportsComponent implements OnInit {
   getTotalStudents(): number {
     return this.filteredReports.reduce(
       (total, report) => total + report.totalStudents,
-      0
+      0,
     );
   }
 
