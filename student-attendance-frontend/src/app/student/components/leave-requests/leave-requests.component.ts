@@ -57,7 +57,7 @@ export class LeaveRequestsComponent implements OnInit {
 
   constructor(
     private studentService: StudentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     this.leaveForm = this.formBuilder.group({
       courseId: ['', [Validators.required]],
