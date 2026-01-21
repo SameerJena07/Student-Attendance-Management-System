@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "students")
 @PrimaryKeyJoinColumn(name = "user_id") // Links to User table
 public class Student extends User {
-    
+
     @Column(name = "roll_number", unique = true)
     private String rollNumber;
 
@@ -25,7 +25,8 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LeaveRequest> leaveRequests = new ArrayList<>();
 
-    // ✅ Default Constructor (Required by AdminServiceImpl when creating new Student())
+    // ✅ Default Constructor (Required by AdminServiceImpl when creating new
+    // Student())
     public Student() {
         super();
     }
@@ -39,19 +40,43 @@ public class Student extends User {
 
     // --- MANUAL GETTERS AND SETTERS ---
 
-    public String getRollNumber() { return rollNumber; }
-    public void setRollNumber(String rollNumber) { this.rollNumber = rollNumber; }
+    public String getRollNumber() {
+        return rollNumber;
+    }
 
-    public String getParentEmail() { return parentEmail; }
-    public void setParentEmail(String parentEmail) { this.parentEmail = parentEmail; }
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
 
-    public ClassEntity getClassEntity() { return classEntity; }
-    public void setClassEntity(ClassEntity classEntity) { this.classEntity = classEntity; }
+    public String getParentEmail() {
+        return parentEmail;
+    }
 
-    public List<Attendance> getAttendances() { return attendances; }
-    public void setAttendances(List<Attendance> attendances) { this.attendances = attendances; }
+    public void setParentEmail(String parentEmail) {
+        this.parentEmail = parentEmail;
+    }
 
-    public List<LeaveRequest> getLeaveRequests() { return leaveRequests; }
-    public void setLeaveRequests(List<LeaveRequest> leaveRequests) { this.leaveRequests = leaveRequests; }
+    public ClassEntity getClassEntity() {
+        return classEntity;
+    }
+
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
+    public List<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+
+    public List<LeaveRequest> getLeaveRequests() {
+        return leaveRequests;
+    }
+
+    public void setLeaveRequests(List<LeaveRequest> leaveRequests) {
+        this.leaveRequests = leaveRequests;
+    }
 }
-

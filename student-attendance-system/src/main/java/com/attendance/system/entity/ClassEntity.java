@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties({"students", "courses"}) // ✅ Prevents infinite JSON recursion
+@JsonIgnoreProperties({ "students", "courses" }) // ✅ Prevents infinite JSON recursion
 @Entity
 @Table(name = "classes")
 public class ClassEntity {
@@ -34,7 +34,8 @@ public class ClassEntity {
     @JsonIgnoreProperties("classEntity") // ✅ Avoid cyclic loop
     private List<Course> courses = new ArrayList<>();
 
-    public ClassEntity() {}
+    public ClassEntity() {
+    }
 
     public ClassEntity(String className, String section, String academicYear) {
         this.className = className;
@@ -42,28 +43,59 @@ public class ClassEntity {
         this.academicYear = academicYear;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getClassName() { return className; }
-    public void setClassName(String className) { this.className = className; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getSection() { return section; }
-    public void setSection(String section) { this.section = section; }
+    public String getClassName() {
+        return className;
+    }
 
-    public String getAcademicYear() { return academicYear; }
-    public void setAcademicYear(String academicYear) { this.academicYear = academicYear; }
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-    public String getSemester() { return semester; }
-    public void setSemester(String semester) { this.semester = semester; }
+    public String getSection() {
+        return section;
+    }
 
-    public List<Student> getStudents() { return students; }
-    public void setStudents(List<Student> students) { this.students = students; }
+    public void setSection(String section) {
+        this.section = section;
+    }
 
-    public List<Course> getCourses() { return courses; }
-    public void setCourses(List<Course> courses) { this.courses = courses; }
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 }
-
-
-
-

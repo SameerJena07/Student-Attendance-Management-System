@@ -20,19 +20,19 @@ public class Course {
 
     @Column(nullable = false)
     private String courseCode;
-    
+
     private String shortName;
     private String description;
-    
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "day_of_week") 
+    @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
-    
+
     private String classRoom;
     private LocalTime startTime;
     private LocalTime endTime;
-    
-    // ✅ FIX 1: Initialize to TRUE by default. 
+
+    // ✅ FIX 1: Initialize to TRUE by default.
     // This solves the "Admin created course but it's hidden" issue.
     @Column(nullable = false)
     private boolean active = true;
@@ -46,11 +46,7 @@ public class Course {
     private ClassEntity classEntity;
 
     @ManyToMany
-    @JoinTable(
-        name = "course_students",
-        joinColumns = @JoinColumn(name = "course_id"),
-        inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
+    @JoinTable(name = "course_students", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     @JsonIgnore // ✅ FIX 2: Prevents "StackOverflow" crash when converting to JSON
     private Set<Student> students = new HashSet<>();
 
@@ -68,46 +64,107 @@ public class Course {
     // MANUAL GETTERS AND SETTERS
     // ==========================================
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getCourseName() { return courseName; }
-    public void setCourseName(String courseName) { this.courseName = courseName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCourseCode() { return courseCode; }
-    public void setCourseCode(String courseCode) { this.courseCode = courseCode; }
+    public String getCourseName() {
+        return courseName;
+    }
 
-    public String getShortName() { return shortName; }
-    public void setShortName(String shortName) { this.shortName = shortName; }
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getCourseCode() {
+        return courseCode;
+    }
 
-    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
-    public void setDayOfWeek(DayOfWeek dayOfWeek) { this.dayOfWeek = dayOfWeek; }
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
 
-    public String getClassRoom() { return classRoom; }
-    public void setClassRoom(String classRoom) { this.classRoom = classRoom; }
+    public String getShortName() {
+        return shortName;
+    }
 
-    public LocalTime getStartTime() { return startTime; }
-    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
-    public LocalTime getEndTime() { return endTime; }
-    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    public String getDescription() {
+        return description;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Teacher getTeacher() { return teacher; }
-    public void setTeacher(Teacher teacher) { this.teacher = teacher; }
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
 
-    public ClassEntity getClassEntity() { return classEntity; }
-    public void setClassEntity(ClassEntity classEntity) { this.classEntity = classEntity; }
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
 
-    public Set<Student> getStudents() { return students; }
-    public void setStudents(Set<Student> students) { this.students = students; }
+    public String getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(String classRoom) {
+        this.classRoom = classRoom;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public ClassEntity getClassEntity() {
+        return classEntity;
+    }
+
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
 }
-
-
-
-

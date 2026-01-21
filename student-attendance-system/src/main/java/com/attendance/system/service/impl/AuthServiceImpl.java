@@ -11,7 +11,7 @@ import com.attendance.system.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -43,8 +43,7 @@ public class AuthServiceImpl implements AuthService {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                user.getRole().name()
-        );
+                user.getRole().name());
     }
 
     @Override
@@ -64,10 +63,10 @@ public class AuthServiceImpl implements AuthService {
                         signUpRequest.getName());
                 admin.setAdminId(signUpRequest.getAdminId());
                 admin.setPhone(signUpRequest.getPhone());
-                
+
                 // --- THIS IS THE CORRECT SYNTAX ---
                 admin.setRole(User.Role.ADMIN);
-                
+
                 user = userRepository.save(admin);
                 break;
 
@@ -78,10 +77,10 @@ public class AuthServiceImpl implements AuthService {
                         signUpRequest.getTeacherId());
                 teacher.setDepartment(signUpRequest.getDepartment());
                 teacher.setPhone(signUpRequest.getPhone());
-                
+
                 // --- THIS IS THE CORRECT SYNTAX ---
                 teacher.setRole(User.Role.TEACHER);
-                
+
                 user = userRepository.save(teacher);
                 break;
 
@@ -136,8 +135,7 @@ public class AuthServiceImpl implements AuthService {
                         student.getClassEntity().getId(),
                         student.getClassEntity().getClassName(),
                         student.getClassEntity().getSection(),
-                        student.getClassEntity().getAcademicYear()
-                );
+                        student.getClassEntity().getAcademicYear());
                 response.setClassInfo(classInfo);
             }
         }

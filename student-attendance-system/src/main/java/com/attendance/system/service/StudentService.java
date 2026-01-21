@@ -9,11 +9,17 @@ import java.util.List;
 
 public interface StudentService {
     StudentDashboardResponse getStudentDashboard(Long studentId, String academicYear, String semester);
-    List<AttendanceDetailResponse> getStudentAttendance(Long studentId, Long courseId, LocalDate startDate, LocalDate endDate);
+
+    List<AttendanceDetailResponse> getStudentAttendance(Long studentId, Long courseId, LocalDate startDate,
+            LocalDate endDate);
 
     // Updated to return DTOs
     LeaveRequestResponse createLeaveRequest(LeaveRequestDTO dto, Long studentId);
+
     List<LeaveRequestResponse> getStudentLeaveRequests(Long studentId);
-    
+
     Double calculateOverallAttendance(Long studentId, String academicYear, String semester);
+
+    // ✅ ADDED: Method signature to fix the StudentController error
+    String markAttendanceViaQr(Long courseId, Long studentId);
 }

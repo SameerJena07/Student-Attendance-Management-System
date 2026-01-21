@@ -9,7 +9,8 @@ public class UnlockRequestDTO {
     private String requestType;
 
     // ✅ Default Constructor (Required for @RequestBody serialization)
-    public UnlockRequestDTO() {}
+    public UnlockRequestDTO() {
+    }
 
     // ✅ Constructor for convenience (Optional, but good to have)
     public UnlockRequestDTO(Long courseId, LocalDate date, String reason, String requestType) {
@@ -20,16 +21,36 @@ public class UnlockRequestDTO {
     }
 
     // ================= GETTERS AND SETTERS =================
-    
-    public Long getCourseId() { return courseId; }
-    public void setCourseId(Long courseId) { this.courseId = courseId; }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public Long getCourseId() {
+        return courseId;
+    }
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
 
-    public String getRequestType() { return requestType; }
-    public void setRequestType(String requestType) { this.requestType = requestType; }
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
 }

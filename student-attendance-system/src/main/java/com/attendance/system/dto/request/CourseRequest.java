@@ -18,36 +18,91 @@ public class CourseRequest {
     private List<Long> studentIds;
 
     // Getters and Setters
-    public String getCourseName() { return courseName; }
-    public void setCourseName(String courseName) { this.courseName = courseName; }
+    public String getCourseName() {
+        return courseName;
+    }
 
-    public String getCourseCode() { return courseCode; }
-    public void setCourseCode(String courseCode) { this.courseCode = courseCode; }
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
-    public String getShortName() { return shortName; }
-    public void setShortName(String shortName) { this.shortName = shortName; }
+    public String getCourseCode() {
+        return courseCode;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
 
-    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
-    public void setDayOfWeek(DayOfWeek dayOfWeek) { this.dayOfWeek = dayOfWeek; }
+    public String getShortName() {
+        return shortName;
+    }
 
-    public String getClassRoom() { return classRoom; }
-    public void setClassRoom(String classRoom) { this.classRoom = classRoom; }
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
-    public LocalTime getStartTime() { return startTime; }
-    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+    public String getDescription() {
+        return description;
+    }
 
-    public LocalTime getEndTime() { return endTime; }
-    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Long getTeacherId() { return teacherId; }
-    public void setTeacherId(Long teacherId) { this.teacherId = teacherId; }
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
 
-    public Long getClassId() { return classId; }
-    public void setClassId(Long classId) { this.classId = classId; }
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
 
-    public List<Long> getStudentIds() { return studentIds; }
-    public void setStudentIds(List<Long> studentIds) { this.studentIds = studentIds; }
+    public String getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(String classRoom) {
+        this.classRoom = classRoom;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
+    }
+
+    public List<Long> getStudentIds() {
+        return studentIds;
+    }
+
+    public void setStudentIds(List<Long> studentIds) {
+        this.studentIds = studentIds;
+    }
 }

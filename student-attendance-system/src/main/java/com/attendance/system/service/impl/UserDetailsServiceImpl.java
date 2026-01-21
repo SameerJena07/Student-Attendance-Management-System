@@ -42,12 +42,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
         }
 
-        public Long getId() { 
-            return id; 
+        public Long getId() {
+            return id;
         }
-        
-        public String getEmail() { 
-            return email; 
+
+        public String getEmail() {
+            return email;
         }
 
         @Override
@@ -56,33 +56,33 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         @Override
-        public String getPassword() { 
-            return password; 
+        public String getPassword() {
+            return password;
         }
-        
+
         @Override
-        public String getUsername() { 
-            return email; 
+        public String getUsername() {
+            return email;
         }
-        
+
         @Override
-        public boolean isAccountNonExpired() { 
-            return true; 
+        public boolean isAccountNonExpired() {
+            return true;
         }
-        
+
         @Override
-        public boolean isAccountNonLocked() { 
-            return true; 
+        public boolean isAccountNonLocked() {
+            return true;
         }
-        
+
         @Override
-        public boolean isCredentialsNonExpired() { 
-            return true; 
+        public boolean isCredentialsNonExpired() {
+            return true;
         }
-        
+
         @Override
-        public boolean isEnabled() { 
-            return true; 
+        public boolean isEnabled() {
+            return true;
         }
     }
 }

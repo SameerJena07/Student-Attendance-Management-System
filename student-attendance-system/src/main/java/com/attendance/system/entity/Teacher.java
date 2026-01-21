@@ -9,7 +9,7 @@ public class Teacher extends User {
 
     // "Employee ID" (e.g., T-101), distinct from the database ID
     @Column(name = "teacher_emp_id")
-    private String teacherId; 
+    private String teacherId;
 
     private String department;
 
@@ -27,9 +27,19 @@ public class Teacher extends User {
 
     // --- MANUAL GETTERS AND SETTERS ---
 
-    public String getTeacherId() { return teacherId; }
-    public void setTeacherId(String teacherId) { this.teacherId = teacherId; }
+    public String getTeacherId() {
+        return teacherId;
+    }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 }

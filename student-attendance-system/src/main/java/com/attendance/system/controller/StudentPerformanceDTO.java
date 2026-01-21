@@ -7,7 +7,8 @@ public class StudentPerformanceDTO {
     private int totalClasses;
     private int classesAttended;
 
-    public StudentPerformanceDTO(Long studentId, String studentName, double attendancePercentage, int totalClasses, int classesAttended) {
+    public StudentPerformanceDTO(Long studentId, String studentName, double attendancePercentage, int totalClasses,
+            int classesAttended) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.attendancePercentage = attendancePercentage;
@@ -16,24 +17,43 @@ public class StudentPerformanceDTO {
     }
 
     // Getters and Setters
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public Long getStudentId() {
+        return studentId;
+    }
 
-    public String getStudentName() { return studentName; }
-    public void setStudentName(String studentName) { this.studentName = studentName; }
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
 
-    public double getAttendancePercentage() { return attendancePercentage; }
-    public void setAttendancePercentage(double attendancePercentage) { this.attendancePercentage = attendancePercentage; }
+    public String getStudentName() {
+        return studentName;
+    }
 
-    public int getTotalClasses() { return totalClasses; }
-    public void setTotalClasses(int totalClasses) { this.totalClasses = totalClasses; }
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 
-    public int getClassesAttended() { return classesAttended; }
-    public void setClassesAttended(int classesAttended) { this.classesAttended = classesAttended; }
+    public double getAttendancePercentage() {
+        return attendancePercentage;
+    }
+
+    public void setAttendancePercentage(double attendancePercentage) {
+        this.attendancePercentage = attendancePercentage;
+    }
+
+    public int getTotalClasses() {
+        return totalClasses;
+    }
+
+    public void setTotalClasses(int totalClasses) {
+        this.totalClasses = totalClasses;
+    }
+
+    public int getClassesAttended() {
+        return classesAttended;
+    }
+
+    public void setClassesAttended(int classesAttended) {
+        this.classesAttended = classesAttended;
+    }
 }
-
-
-
-
-
-

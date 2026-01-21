@@ -15,23 +15,53 @@ public class AttendanceMarkRequest {
         private Long studentId;
         private Attendance.Status status;
 
-        public Long getStudentId() { return studentId; }
-        public void setStudentId(Long studentId) { this.studentId = studentId; }
+        public Long getStudentId() {
+            return studentId;
+        }
 
-        public Attendance.Status getStatus() { return status; }
-        public void setStatus(Attendance.Status status) { this.status = status; }
+        public void setStudentId(Long studentId) {
+            this.studentId = studentId;
+        }
+
+        public Attendance.Status getStatus() {
+            return status;
+        }
+
+        public void setStatus(Attendance.Status status) {
+            this.status = status;
+        }
     }
 
     // Getters and Setters
-    public Long getCourseId() { return courseId; }
-    public void setCourseId(Long courseId) { this.courseId = courseId; }
+    public Long getCourseId() {
+        return courseId;
+    }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
 
-    public boolean isNotifyParents() { return notifyParents; }
-    public void setNotifyParents(boolean notifyParents) { this.notifyParents = notifyParents; }
+    public LocalDate getDate() {
+        return date;
+    }
 
-    public List<StudentAttendance> getAttendanceList() { return attendanceList; }
-    public void setAttendanceList(List<StudentAttendance> attendanceList) { this.attendanceList = attendanceList; }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public boolean isNotifyParents() {
+        return notifyParents;
+    }
+
+    public void setNotifyParents(boolean notifyParents) {
+        this.notifyParents = notifyParents;
+    }
+
+    public List<StudentAttendance> getAttendanceList() {
+        return attendanceList;
+    }
+
+    public void setAttendanceList(List<StudentAttendance> attendanceList) {
+        this.attendanceList = attendanceList;
+    }
 }

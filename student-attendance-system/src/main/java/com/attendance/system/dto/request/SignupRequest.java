@@ -21,12 +21,12 @@ public class SignupRequest {
 
     @NotBlank
     private String role;
-    
+
     // --- THESE FIELDS WERE LIKELY MISSING ---
     // These fields are required by your AuthServiceImpl
 
     private String phone;
-    
+
     // For Admin
     private String adminId;
 
@@ -39,7 +39,6 @@ public class SignupRequest {
     private String parentEmail;
     private Long classId;
 
-    
     // --- GETTERS AND SETTERS FOR ALL FIELDS ---
 
     public String getName() {

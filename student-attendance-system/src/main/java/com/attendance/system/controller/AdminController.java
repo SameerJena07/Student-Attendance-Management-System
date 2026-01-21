@@ -16,7 +16,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RestController
 @RequestMapping("/admin")
-// @PreAuthorize("hasRole('ADMIN')") // Uncomment if you have role-based security fully set up
+// @PreAuthorize("hasRole('ADMIN')") // Uncomment if you have role-based
+// security fully set up
 public class AdminController {
 
     @Autowired
@@ -38,7 +39,7 @@ public class AdminController {
     public ResponseEntity<List<UserInfoResponse>> getAllTeachers() {
         return ResponseEntity.ok(adminService.getAllTeachers());
     }
-    
+
     @GetMapping("/teachers/{teacherId}")
     public ResponseEntity<UserInfoResponse> getTeacherById(@PathVariable Long teacherId) {
         return ResponseEntity.ok(adminService.getTeacherById(teacherId));
@@ -46,7 +47,7 @@ public class AdminController {
 
     @PutMapping("/teachers/{teacherId}")
     public ResponseEntity<UserInfoResponse> updateTeacher(@PathVariable Long teacherId,
-                                                          @Valid @RequestBody SignupRequest signupRequest) {
+            @Valid @RequestBody SignupRequest signupRequest) {
         return ResponseEntity.ok(adminService.updateTeacher(teacherId, signupRequest));
     }
 
@@ -66,7 +67,7 @@ public class AdminController {
     public ResponseEntity<List<StudentResponse>> getAllStudents() {
         return ResponseEntity.ok(adminService.getAllStudents());
     }
-    
+
     @GetMapping("/students/{studentId}")
     public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long studentId) {
         return ResponseEntity.ok(adminService.getStudentById(studentId));
@@ -98,7 +99,7 @@ public class AdminController {
 
     @PutMapping("/classes/{classId}")
     public ResponseEntity<ClassEntity> updateClass(@PathVariable Long classId,
-                                                   @RequestBody ClassEntity classEntity) {
+            @RequestBody ClassEntity classEntity) {
         return ResponseEntity.ok(adminService.updateClass(classId, classEntity));
     }
 
@@ -121,7 +122,7 @@ public class AdminController {
 
     @PutMapping("/courses/{courseId}")
     public ResponseEntity<CourseResponse> updateCourse(@PathVariable Long courseId,
-                                                       @RequestBody CourseRequest request) {
+            @RequestBody CourseRequest request) {
         return ResponseEntity.ok(adminService.updateCourse(courseId, request));
     }
 
@@ -132,8 +133,9 @@ public class AdminController {
     }
 
     // ---------------- UNLOCK REQUESTS (UPDATED) ----------------
-    
-    // ✅ FIX: Use getAllUnlockRequests to show history (Approved/Rejected) not just pending
+
+    // ✅ FIX: Use getAllUnlockRequests to show history (Approved/Rejected) not just
+    // pending
     @GetMapping("/unlock-requests")
     public ResponseEntity<List<UnlockRequest>> getAllUnlockRequests() {
         return ResponseEntity.ok(adminService.getAllUnlockRequests());
@@ -147,7 +149,7 @@ public class AdminController {
 
     @PostMapping("/unlock-requests/{requestId}/process")
     public ResponseEntity<UnlockRequest> processUnlockRequest(@PathVariable Long requestId,
-                                                              @RequestParam boolean approve) {
+            @RequestParam boolean approve) {
         return ResponseEntity.ok(adminService.processUnlockRequest(requestId, approve));
     }
 

@@ -44,14 +44,14 @@ public class Attendance {
     private LocalTime endTime;
 
     // 🔴 NEW FIELDS FOR UNLOCKING MECHANISM
-    
+
     // Tracks if the record is locked for editing (Default: TRUE)
     @Column(name = "is_locked", nullable = false)
-    private boolean isLocked = true; 
+    private boolean isLocked = true;
 
     // Tracks which Admin approved the unlock (Optional)
     @Column(name = "unlock_approved_by")
-    private Long unlockApprovedBy; 
+    private Long unlockApprovedBy;
 
     public enum Status {
         PRESENT,
@@ -59,7 +59,8 @@ public class Attendance {
         LATE
     }
 
-    public Attendance() {}
+    public Attendance() {
+    }
 
     public Attendance(Student student, Course course, LocalDate date, Status status) {
         this.student = student;
@@ -70,40 +71,100 @@ public class Attendance {
 
     // ================= GETTERS AND SETTERS =================
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Student getStudent() { return student; }
-    public void setStudent(Student student) { this.student = student; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Course getCourse() { return course; }
-    public void setCourse(Course course) { this.course = course; }
+    public Student getStudent() {
+        return student;
+    }
 
-    public Teacher getTeacher() { return teacher; }
-    public void setTeacher(Teacher teacher) { this.teacher = teacher; }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public Course getCourse() {
+        return course;
+    }
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-    public LocalDateTime getMarkedAt() { return markedAt; }
-    public void setMarkedAt(LocalDateTime markedAt) { this.markedAt = markedAt; }
+    public Teacher getTeacher() {
+        return teacher;
+    }
 
-    public String getMarkedBy() { return markedBy; }
-    public void setMarkedBy(String markedBy) { this.markedBy = markedBy; }
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
-    public LocalTime getStartTime() { return startTime; }
-    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+    public LocalDate getDate() {
+        return date;
+    }
 
-    public LocalTime getEndTime() { return endTime; }
-    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getMarkedAt() {
+        return markedAt;
+    }
+
+    public void setMarkedAt(LocalDateTime markedAt) {
+        this.markedAt = markedAt;
+    }
+
+    public String getMarkedBy() {
+        return markedBy;
+    }
+
+    public void setMarkedBy(String markedBy) {
+        this.markedBy = markedBy;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
 
     // 🔴 NEW GETTERS AND SETTERS
-    public boolean getIsLocked() { return isLocked; }
-    public void setIsLocked(boolean isLocked) { this.isLocked = isLocked; }
+    public boolean getIsLocked() {
+        return isLocked;
+    }
 
-    public Long getUnlockApprovedBy() { return unlockApprovedBy; }
-    public void setUnlockApprovedBy(Long unlockApprovedBy) { this.unlockApprovedBy = unlockApprovedBy; }
+    public void setIsLocked(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+
+    public Long getUnlockApprovedBy() {
+        return unlockApprovedBy;
+    }
+
+    public void setUnlockApprovedBy(Long unlockApprovedBy) {
+        this.unlockApprovedBy = unlockApprovedBy;
+    }
 }

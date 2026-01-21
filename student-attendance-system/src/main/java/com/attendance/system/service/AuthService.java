@@ -7,6 +7,8 @@ import com.attendance.system.dto.response.UserInfoResponse;
 
 public interface AuthService {
     JwtResponse authenticateUser(LoginRequest loginRequest);
+
     UserInfoResponse registerUser(SignupRequest signUpRequest);
+
     UserInfoResponse getCurrentUserInfo(Long userId);
 }

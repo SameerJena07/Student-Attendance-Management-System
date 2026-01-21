@@ -1,6 +1,8 @@
 package com.attendance.system.controller;
 
+import com.attendance.system.config.JwtUtils; // ADDED: For token validation
 import com.attendance.system.dto.request.LeaveRequestDTO;
+import com.attendance.system.dto.request.QrAttendanceRequest; // ADDED: New DTO
 import com.attendance.system.dto.response.AttendanceDetailResponse;
 import com.attendance.system.dto.response.LeaveRequestResponse;
 import com.attendance.system.dto.response.StudentDashboardResponse;
@@ -23,8 +25,12 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
 
-    @Autowired private StudentService studentService;
-    @Autowired private StudentRepository studentRepository;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private JwtUtils jwtUtils; // ADDED: Inject JwtUtils
 
     private Long getCurrentStudentId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -34,13 +40,40 @@ public class StudentController {
         return student.getId();
     }
 
+    /**
+     * ✅ NEW ENDPOINT: Marks attendance by processing the scanned QR token.
+     * This is "free and best" because it reuses your existing JWT security.
+     */
+    @PostMapping("/attendance/qr")
+    public ResponseEntity<String> markAttendanceByQr(@RequestBody QrAttendanceRequest request) {
+        // 1. Validate if the QR token is authentic and not expired (60sec limit)
+        if (!jwtUtils.validateJwtToken(request.getScannedToken())) {
+            return ResponseEntity.badRequest().body("Error: Invalid or expired QR Code.");
+        }
+
+        // 2. Extract the Course ID (Class ID) hidden inside the token
+        Long courseId = jwtUtils.getClassIdFromQrToken(request.getScannedToken());
+
+        // 3. Mark the attendance in the database
+        // Note: We use request.setStudentId(getCurrentStudentId()) to ensure security
+        request.setStudentId(getCurrentStudentId());
+
+        String result = studentService.markAttendanceViaQr(courseId, request.getStudentId());
+
+        return ResponseEntity.ok(result);
+    }
+
+    // --- EXISTING ENDPOINTS ---
+
     @GetMapping("/dashboard")
     public ResponseEntity<StudentDashboardResponse> getDashboard(
             @RequestParam(required = false) String academicYear,
             @RequestParam(required = false) String semester) {
-        
-        if ("All".equalsIgnoreCase(academicYear) || "".equals(academicYear)) academicYear = null;
-        if ("All".equalsIgnoreCase(semester) || "".equals(semester)) semester = null;
+
+        if ("All".equalsIgnoreCase(academicYear) || "".equals(academicYear))
+            academicYear = null;
+        if ("All".equalsIgnoreCase(semester) || "".equals(semester))
+            semester = null;
 
         return ResponseEntity.ok(studentService.getStudentDashboard(getCurrentStudentId(), academicYear, semester));
     }
@@ -50,20 +83,21 @@ public class StudentController {
             @RequestParam(required = false) Long courseId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        
-        if (startDate == null) startDate = LocalDate.now().minusDays(30);
-        if (endDate == null) endDate = LocalDate.now();
 
-        return ResponseEntity.ok(studentService.getStudentAttendance(getCurrentStudentId(), courseId, startDate, endDate));
+        if (startDate == null)
+            startDate = LocalDate.now().minusDays(30);
+        if (endDate == null)
+            endDate = LocalDate.now();
+
+        return ResponseEntity
+                .ok(studentService.getStudentAttendance(getCurrentStudentId(), courseId, startDate, endDate));
     }
 
-    // ✅ FIXED: Returns DTO
     @PostMapping("/leave")
     public ResponseEntity<LeaveRequestResponse> createLeaveRequest(@Valid @RequestBody LeaveRequestDTO requestDTO) {
         return ResponseEntity.ok(studentService.createLeaveRequest(requestDTO, getCurrentStudentId()));
     }
 
-    // ✅ FIXED: Returns List of DTOs
     @GetMapping("/leave")
     public ResponseEntity<List<LeaveRequestResponse>> getLeaveRequests() {
         return ResponseEntity.ok(studentService.getStudentLeaveRequests(getCurrentStudentId()));

@@ -2,13 +2,12 @@ package com.attendance.system.controller;
 
 import com.attendance.system.dto.request.*;
 import com.attendance.system.dto.response.*;
-// Explicit import to avoid conflicts
-import com.attendance.system.dto.response.StudentPerformanceDTO; 
-
+import com.attendance.system.dto.response.StudentPerformanceDTO;
 import com.attendance.system.entity.Teacher;
 import com.attendance.system.entity.UnlockRequest;
 import com.attendance.system.repository.TeacherRepository;
 import com.attendance.system.service.TeacherService;
+import com.attendance.system.config.JwtUtils; // ADDED: For QR generation
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class TeacherController {
 
-    @Autowired private TeacherService teacherService;
-    @Autowired private TeacherRepository teacherRepository;
+    @Autowired
+    private TeacherService teacherService;
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private JwtUtils jwtUtils; // ADDED: Inject JwtUtils
 
     private Long getCurrentTeacherId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -35,15 +38,25 @@ public class TeacherController {
         return teacher.getId();
     }
 
-    // ... existing attendance endpoints ...
-    
+    /**
+     * ✅ NEW ENDPOINT: Generates a 60-second secure token for QR code attendance.
+     * Use this in Angular to display the QR code.
+     */
+    @GetMapping("/attendance/generate-qr/{courseId}")
+    public ResponseEntity<QrResponse> generateAttendanceQr(@PathVariable Long courseId) {
+        // Generates token using the method we added to JwtUtils
+        String qrToken = jwtUtils.generateQrToken(courseId);
+        return ResponseEntity.ok(new QrResponse(qrToken));
+    }
+
+    // ... existing attendance endpoints (keep exactly as they are) ...
+
     @GetMapping("/attendance/rules/check")
     public ResponseEntity<Boolean> checkAttendanceRules(
             @RequestParam Long courseId, @RequestParam String date, @RequestParam boolean isEdit) {
         LocalDate checkDate = LocalDate.parse(date);
-        boolean allowed = isEdit ? 
-            teacherService.canEditAttendance(courseId, checkDate) : 
-            teacherService.canMarkAttendance(courseId, checkDate);
+        boolean allowed = isEdit ? teacherService.canEditAttendance(courseId, checkDate)
+                : teacherService.canMarkAttendance(courseId, checkDate);
         return ResponseEntity.ok(allowed);
     }
 
@@ -67,8 +80,7 @@ public class TeacherController {
     public ResponseEntity<List<UnlockRequest>> getUnlockRequests() {
         return ResponseEntity.ok(teacherService.getTeacherUnlockRequests(getCurrentTeacherId()));
     }
-    
-    // ✅ FIXED: Now uses the explicitly imported StudentPerformanceDTO from 'dto.response'
+
     @GetMapping("/students/{studentId}/performance")
     public ResponseEntity<StudentPerformanceDTO> getStudentPerformance(
             @PathVariable Long studentId, @RequestParam Long courseId) {
@@ -95,23 +107,23 @@ public class TeacherController {
     public ResponseEntity<List<CourseResponse>> getTeacherCourses() {
         return ResponseEntity.ok(teacherService.getTeacherCourses(getCurrentTeacherId()));
     }
-    
+
     @GetMapping("/leave-requests/pending")
     public ResponseEntity<List<LeaveRequestResponse>> getPendingLeaveRequests() {
         return ResponseEntity.ok(teacherService.getPendingLeaveRequests(getCurrentTeacherId()));
     }
 
-    // ✅ ADDED: Endpoint to fetch history
     @GetMapping("/leave-requests/history")
     public ResponseEntity<List<LeaveRequestResponse>> getLeaveHistory() {
         return ResponseEntity.ok(teacherService.getTeacherLeaveHistory(getCurrentTeacherId()));
     }
 
     @PostMapping("/leave-requests/{requestId}/process")
-    public ResponseEntity<LeaveRequestResponse> processLeaveRequest(@PathVariable Long requestId, @RequestParam boolean approve) {
+    public ResponseEntity<LeaveRequestResponse> processLeaveRequest(@PathVariable Long requestId,
+            @RequestParam boolean approve) {
         return ResponseEntity.ok(teacherService.processLeaveRequest(requestId, approve, getCurrentTeacherId()));
     }
-    
+
     @GetMapping("/profile")
     public ResponseEntity<TeacherProfileDTO> getProfile() {
         return ResponseEntity.ok(teacherService.getTeacherProfile(getCurrentTeacherId()));
@@ -128,12 +140,3 @@ public class TeacherController {
         return ResponseEntity.ok("Password changed successfully.");
     }
 }
-
-
-
-
-
-
-
-
-

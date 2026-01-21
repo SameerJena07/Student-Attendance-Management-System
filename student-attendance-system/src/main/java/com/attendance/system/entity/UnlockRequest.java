@@ -16,21 +16,21 @@ public class UnlockRequest {
     // Link to the Teacher who made the request
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id", nullable = false)
-    @JsonIgnoreProperties({"unlockRequests", "courses", "password", "role"}) // Prevent recursion
+    @JsonIgnoreProperties({ "unlockRequests", "courses", "password", "role" }) // Prevent recursion
     private Teacher teacher;
 
     // Link to the Course to be unlocked
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", nullable = false)
-    @JsonIgnoreProperties({"unlockRequests", "students", "teacher"}) // Prevent recursion
+    @JsonIgnoreProperties({ "unlockRequests", "students", "teacher" }) // Prevent recursion
     private Course course;
 
     // This can be NULL for general unlocks
     @Column(name = "attendance_id")
-    private Long attendanceId; 
+    private Long attendanceId;
 
     @Column(name = "request_date", nullable = false)
-    private LocalDate requestDate; 
+    private LocalDate requestDate;
 
     @Column(columnDefinition = "TEXT")
     private String reason;
@@ -47,41 +47,87 @@ public class UnlockRequest {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        if (this.status == null) this.status = Status.PENDING;
+        if (this.status == null)
+            this.status = Status.PENDING;
     }
 
     public enum Status {
         PENDING, APPROVED, REJECTED
     }
-    
+
     // ==========================================
     // MANUAL GETTERS AND SETTERS (No Lombok)
     // ==========================================
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Teacher getTeacher() { return teacher; }
-    public void setTeacher(Teacher teacher) { this.teacher = teacher; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Course getCourse() { return course; }
-    public void setCourse(Course course) { this.course = course; }
+    public Teacher getTeacher() {
+        return teacher;
+    }
 
-    public Long getAttendanceId() { return attendanceId; }
-    public void setAttendanceId(Long attendanceId) { this.attendanceId = attendanceId; }
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
-    public LocalDate getRequestDate() { return requestDate; }
-    public void setRequestDate(LocalDate requestDate) { this.requestDate = requestDate; }
+    public Course getCourse() {
+        return course;
+    }
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
+    public Long getAttendanceId() {
+        return attendanceId;
+    }
 
-    public String getRequestType() { return requestType; }
-    public void setRequestType(String requestType) { this.requestType = requestType; }
+    public void setAttendanceId(Long attendanceId) {
+        this.attendanceId = attendanceId;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDate getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(LocalDate requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

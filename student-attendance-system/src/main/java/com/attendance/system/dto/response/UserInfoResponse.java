@@ -6,17 +6,18 @@ public class UserInfoResponse {
     private String name;
     private String phone;
     private String role;
-    
+
     // ✅ ADD THIS FIELD
     private String adminId;
-    
+
     private String teacherId;
     private String department;
     private String rollNumber;
     private String parentEmail;
     private ClassInfo classInfo;
 
-    public UserInfoResponse() {}
+    public UserInfoResponse() {
+    }
 
     public static class ClassInfo {
         private Long id;
@@ -30,45 +31,111 @@ public class UserInfoResponse {
             this.section = section;
             this.academicYear = academicYear;
         }
-        
-        public Long getId() { return id; }
-        public String getClassName() { return className; }
-        public String getSection() { return section; }
-        public String getAcademicYear() { return academicYear; }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+
+        public String getSection() {
+            return section;
+        }
+
+        public String getAcademicYear() {
+            return academicYear;
+        }
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     // ✅ THIS SETTER FIXES THE ERROR
-    public String getAdminId() { return adminId; }
-    public void setAdminId(String adminId) { this.adminId = adminId; }
+    public String getAdminId() {
+        return adminId;
+    }
 
-    public String getTeacherId() { return teacherId; }
-    public void setTeacherId(String teacherId) { this.teacherId = teacherId; }
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    public String getTeacherId() {
+        return teacherId;
+    }
 
-    public String getRollNumber() { return rollNumber; }
-    public void setRollNumber(String rollNumber) { this.rollNumber = rollNumber; }
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
 
-    public String getParentEmail() { return parentEmail; }
-    public void setParentEmail(String parentEmail) { this.parentEmail = parentEmail; }
+    public String getDepartment() {
+        return department;
+    }
 
-    public ClassInfo getClassInfo() { return classInfo; }
-    public void setClassInfo(ClassInfo classInfo) { this.classInfo = classInfo; }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    public String getParentEmail() {
+        return parentEmail;
+    }
+
+    public void setParentEmail(String parentEmail) {
+        this.parentEmail = parentEmail;
+    }
+
+    public ClassInfo getClassInfo() {
+        return classInfo;
+    }
+
+    public void setClassInfo(ClassInfo classInfo) {
+        this.classInfo = classInfo;
+    }
 }

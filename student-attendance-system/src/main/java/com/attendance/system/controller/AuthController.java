@@ -26,7 +26,7 @@ public class AuthController {
             JwtResponse jwtResponse = authService.authenticateUser(loginRequest);
             return ResponseEntity.ok(jwtResponse);
         } catch (Exception e) {
-        	e.printStackTrace(); 
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -62,4 +62,3 @@ public class AuthController {
         }
     }
 }
-

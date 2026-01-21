@@ -22,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String email, String name, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -32,17 +32,14 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
 
-        List<GrantedAuthority> authorities =
-        		List.of(new SimpleGrantedAuthority(user.getRole().name()));
-
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new UserDetailsImpl(
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
                 user.getPassword(),
-                authorities
-        );
+                authorities);
     }
 
     @Override
@@ -50,34 +47,54 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getName() { return name; }
-
-    @Override
-    public String getPassword() { return password; }
-
-    @Override
-    public String getUsername() { return email; }
-
-    @Override
-    public boolean isAccountNonExpired() { return true; }
+    public String getName() {
+        return name;
+    }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public String getPassword() {
+        return password;
+    }
 
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public String getUsername() {
+        return email;
+    }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDetailsImpl)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof UserDetailsImpl))
+            return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }

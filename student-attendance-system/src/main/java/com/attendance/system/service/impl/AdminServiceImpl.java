@@ -21,21 +21,29 @@ import java.util.stream.Collectors;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired private TeacherRepository teacherRepository;
-    @Autowired private StudentRepository studentRepository;
-    @Autowired private ClassRepository classRepository;
-    @Autowired private CourseRepository courseRepository;
-    @Autowired private UnlockRequestRepository unlockRequestRepository;
-    @Autowired private AttendanceRepository attendanceRepository; 
-    @Autowired private AuthService authService; 
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private ClassRepository classRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private UnlockRequestRepository unlockRequestRepository;
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     // NOTE: If you have an AdminRepository, it should be autowired here.
 
     // =================================================
     // DASHBOARD & RECENT ACTIVITY
     // =================================================
     // ... (All Dashboard and Helper methods remain unchanged)
-    
+
     @Override
     public DashboardResponse getAdminDashboard() {
         DashboardResponse response = new DashboardResponse();
@@ -43,10 +51,10 @@ public class AdminServiceImpl implements AdminService {
         response.setTotalStudents(studentRepository.countByActiveTrue());
         response.setTotalClasses(classRepository.countAllClasses());
         response.setTotalCourses(courseRepository.countAllCourses());
-        
+
         // ✅ POPULATE RECENT ACTIVITY
         response.setRecentActivities(generateRecentActivities());
-        
+
         return response;
     }
 
@@ -58,38 +66,37 @@ public class AdminServiceImpl implements AdminService {
         int limit = Math.min(requests.size(), 3);
         for (int i = 0; i < limit; i++) {
             UnlockRequest req = requests.get(i);
-            String desc = "Unlock request " + req.getStatus().name().toLowerCase() + " for " + 
-                          (req.getTeacher() != null ? req.getTeacher().getName() : "Teacher");
-            
+            String desc = "Unlock request " + req.getStatus().name().toLowerCase() + " for " +
+                    (req.getTeacher() != null ? req.getTeacher().getName() : "Teacher");
+
             activities.add(new ActivityDTO(
-                desc,
-                getTimeAgo(req.getCreatedAt()),
-                "bi-lock",
-                req.getStatus() == UnlockRequest.Status.PENDING ? "warning" : "info",
-                req.getCreatedAt()
-            ));
+                    desc,
+                    getTimeAgo(req.getCreatedAt()),
+                    "bi-lock",
+                    req.getStatus() == UnlockRequest.Status.PENDING ? "warning" : "info",
+                    req.getCreatedAt()));
         }
 
         // 2. Get recent Attendance Marked (Limit 3)
         // Note: Requires 'findTop5ByOrderByMarkedAtDesc' in AttendanceRepository
         List<Attendance> attendances = attendanceRepository.findTop5ByOrderByMarkedAtDesc();
         Set<String> seenSessions = new HashSet<>();
-        
+
         for (Attendance att : attendances) {
-            if (att.getMarkedAt() == null) continue;
-            
+            if (att.getMarkedAt() == null)
+                continue;
+
             String key = att.getCourse().getId() + "-" + att.getDate();
             if (!seenSessions.contains(key)) {
                 seenSessions.add(key);
                 String desc = "Attendance marked for " + att.getCourse().getCourseName();
-                
+
                 activities.add(new ActivityDTO(
-                    desc,
-                    getTimeAgo(att.getMarkedAt()),
-                    "bi-check-circle",
-                    "success",
-                    att.getMarkedAt()
-                ));
+                        desc,
+                        getTimeAgo(att.getMarkedAt()),
+                        "bi-check-circle",
+                        "success",
+                        att.getMarkedAt()));
             }
         }
 
@@ -101,14 +108,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private String getTimeAgo(LocalDateTime time) {
-        if (time == null) return "Just now";
+        if (time == null)
+            return "Just now";
         Duration duration = Duration.between(time, LocalDateTime.now());
         long minutes = duration.toMinutes();
-        
-        if (minutes < 1) return "Just now";
-        if (minutes < 60) return minutes + " mins ago";
+
+        if (minutes < 1)
+            return "Just now";
+        if (minutes < 60)
+            return minutes + " mins ago";
         long hours = duration.toHours();
-        if (hours < 24) return hours + " hours ago";
+        if (hours < 24)
+            return hours + " hours ago";
         long days = duration.toDays();
         return days + " days ago";
     }
@@ -128,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
         long approved = unlockRequestRepository.countByStatus(UnlockRequest.Status.APPROVED);
         long rejected = unlockRequestRepository.countByStatus(UnlockRequest.Status.REJECTED);
         long total = pending + approved + rejected;
-        
+
         return new UnlockStatsResponse(total, pending, approved, rejected);
     }
 
@@ -138,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     * FIX: Processes the unlock request and updates the corresponding Attendance 
+     * FIX: Processes the unlock request and updates the corresponding Attendance
      * records to be unlocked (isLocked = false) if approved.
      */
     @Override
@@ -146,25 +157,26 @@ public class AdminServiceImpl implements AdminService {
     public UnlockRequest processUnlockRequest(Long requestId, boolean approve) {
         UnlockRequest request = unlockRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Unlock request not found"));
-        
+
         request.setStatus(approve ? UnlockRequest.Status.APPROVED : UnlockRequest.Status.REJECTED);
 
         if (approve) {
-            // Get the ID of the Admin currently processing the request (Optional, for tracking)
-            Long adminId = getAdminUserId(); 
+            // Get the ID of the Admin currently processing the request (Optional, for
+            // tracking)
+            Long adminId = getAdminUserId();
 
             // 1. Find all attendance records for the specific course and date
             List<Attendance> recordsToUnlock = attendanceRepository.findByCourseAndDate(
-            	    request.getCourse(), 
-            	    request.getRequestDate() // <--- Check your UnlockRequest entity for the exact name
-            	);
+                    request.getCourse(),
+                    request.getRequestDate() // <--- Check your UnlockRequest entity for the exact name
+            );
 
             // 2. Update the lock status on the attendance records
             for (Attendance record : recordsToUnlock) {
                 record.setIsLocked(false);
-                record.setUnlockApprovedBy(adminId); 
+                record.setUnlockApprovedBy(adminId);
             }
-            
+
             // 3. Save the unlocked attendance records
             attendanceRepository.saveAll(recordsToUnlock);
         }
@@ -173,64 +185,65 @@ public class AdminServiceImpl implements AdminService {
         return unlockRequestRepository.save(request);
     }
 
-    /** Helper method to get the current logged-in user's ID. Assuming Admin is a User. */
+    /**
+     * Helper method to get the current logged-in user's ID. Assuming Admin is a
+     * User.
+     */
     private Long getAdminUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof User user) {
             return user.getId();
         }
         // Fallback or handle unauthenticated case (optional)
-        return null; 
+        return null;
     }
 
     // =================================================
     // REPORT LOGIC
     // =================================================
     // ... (All Report and CRUD methods remain unchanged)
-    
+
     @Override
     public List<AttendanceReportResponse> getAttendanceReports() {
         List<Attendance> allAttendance = attendanceRepository.findAll();
 
         Map<String, List<Attendance>> groupedBySession = allAttendance.stream()
-                .collect(Collectors.groupingBy(a -> 
-                    a.getCourse().getId() + "_" + a.getDate().toString()
-                ));
+                .collect(Collectors.groupingBy(a -> a.getCourse().getId() + "_" + a.getDate().toString()));
 
         return groupedBySession.values().stream()
                 .map(sessionList -> {
-                    if (sessionList.isEmpty()) return null;
-                    
+                    if (sessionList.isEmpty())
+                        return null;
+
                     Attendance firstRecord = sessionList.get(0);
                     Course course = firstRecord.getCourse();
                     ClassEntity classEntity = course.getClassEntity();
-                    
+
                     int totalStudents = sessionList.size();
                     int presentCount = (int) sessionList.stream()
-                            .filter(this::isPresent) 
+                            .filter(this::isPresent)
                             .count();
                     int absentCount = totalStudents - presentCount;
-                    
+
                     // Prevent Division by Zero
                     double percentage = 0.0;
                     if (totalStudents > 0) {
                         percentage = ((double) presentCount / totalStudents) * 100;
                     }
-                    
+
                     percentage = Math.round(percentage * 10.0) / 10.0;
                     String status = determineStatus(percentage);
 
                     return new AttendanceReportResponse(
-                        classEntity != null ? classEntity.getClassName() + " " + classEntity.getSection() : "-",
-                        course.getCourseName(),
-                        course.getTeacher() != null ? course.getTeacher().getName() : "Unknown",
-                        firstRecord.getDate(),
-                        totalStudents,
-                        presentCount,
-                        absentCount,
-                        percentage, 
-                        status
-                    );
+                            classEntity != null ? classEntity.getClassName() + " " + classEntity.getSection() : "-",
+                            course.getCourseName(),
+                            course.getTeacher() != null ? course.getTeacher().getName() : "Unknown",
+                            firstRecord.getDate(),
+                            totalStudents,
+                            presentCount,
+                            absentCount,
+                            percentage,
+                            status);
                 })
                 .filter(java.util.Objects::nonNull)
                 .sorted((r1, r2) -> r2.getDate().compareTo(r1.getDate()))
@@ -238,20 +251,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private boolean isPresent(Attendance a) {
-        return a.getStatus() != null && "PRESENT".equalsIgnoreCase(String.valueOf(a.getStatus())); 
+        return a.getStatus() != null && "PRESENT".equalsIgnoreCase(String.valueOf(a.getStatus()));
     }
 
     private String determineStatus(double percentage) {
-        if (percentage >= 90) return "Excellent";
-        if (percentage >= 75) return "Good";
-        if (percentage >= 60) return "Average";
+        if (percentage >= 90)
+            return "Excellent";
+        if (percentage >= 75)
+            return "Good";
+        if (percentage >= 60)
+            return "Average";
         return "Needs Attention";
     }
 
     // ... (All other CRUD methods remain unchanged)
     @Override
     public List<CourseResponse> getAllCourses() {
-        return courseRepository.findAllActiveWithDetails().stream() 
+        return courseRepository.findAllActiveWithDetails().stream()
                 .map(course -> {
                     String teacherName = (course.getTeacher() != null) ? course.getTeacher().getName() : "-";
                     String className = (course.getClassEntity() != null) ? course.getClassEntity().getClassName() : "-";
@@ -259,21 +275,20 @@ public class AdminServiceImpl implements AdminService {
                     String shortName = (course.getShortName() != null) ? course.getShortName() : "-";
 
                     return new CourseResponse(
-                        course.getId(),
-                        course.getCourseCode(),
-                        course.getCourseName(),
-                        shortName, 
-                        course.getDescription(),
-                        course.getTeacher() != null ? course.getTeacher().getId() : null,
-                        teacherName, 
-                        course.getClassEntity() != null ? course.getClassEntity().getId() : null,
-                        className, 
-                        section, 
-                        course.getDayOfWeek(),
-                        course.getStartTime(),
-                        course.getEndTime(),
-                        course.getClassRoom()
-                    );
+                            course.getId(),
+                            course.getCourseCode(),
+                            course.getCourseName(),
+                            shortName,
+                            course.getDescription(),
+                            course.getTeacher() != null ? course.getTeacher().getId() : null,
+                            teacherName,
+                            course.getClassEntity() != null ? course.getClassEntity().getId() : null,
+                            className,
+                            section,
+                            course.getDayOfWeek(),
+                            course.getStartTime(),
+                            course.getEndTime(),
+                            course.getClassRoom());
                 })
                 .collect(Collectors.toList());
     }
@@ -284,13 +299,13 @@ public class AdminServiceImpl implements AdminService {
         Course course = new Course();
         course.setCourseCode(request.getCourseCode());
         course.setCourseName(request.getCourseName());
-        course.setShortName(request.getShortName()); 
+        course.setShortName(request.getShortName());
         course.setDescription(request.getDescription());
         course.setDayOfWeek(request.getDayOfWeek());
         course.setClassRoom(request.getClassRoom());
         course.setStartTime(request.getStartTime());
         course.setEndTime(request.getEndTime());
-        course.setActive(true); 
+        course.setActive(true);
 
         Teacher teacher = teacherRepository.findById(request.getTeacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
@@ -331,7 +346,7 @@ public class AdminServiceImpl implements AdminService {
         ClassEntity classEntity = classRepository.findById(request.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         course.setClassEntity(classEntity);
-        
+
         if (request.getStudentIds() != null) {
             List<Student> selectedStudents = studentRepository.findAllById(request.getStudentIds());
             course.setStudents(new HashSet<>(selectedStudents));
@@ -356,8 +371,7 @@ public class AdminServiceImpl implements AdminService {
                 saved.getDayOfWeek(),
                 saved.getStartTime(),
                 saved.getEndTime(),
-                saved.getClassRoom()
-        );
+                saved.getClassRoom());
     }
 
     @Override
@@ -414,7 +428,7 @@ public class AdminServiceImpl implements AdminService {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
         teacher.setActive(false);
-        teacherRepository.save(teacher); 
+        teacherRepository.save(teacher);
     }
 
     @Override
@@ -429,14 +443,13 @@ public class AdminServiceImpl implements AdminService {
                         student.getParentEmail(),
                         student.getClassEntity() != null ? student.getClassEntity().getId() : null,
                         student.getClassEntity() != null ? student.getClassEntity().getClassName() : null,
-                        student.getClassEntity() != null ? student.getClassEntity().getSection() : null
-                ))
+                        student.getClassEntity() != null ? student.getClassEntity().getSection() : null))
                 .collect(Collectors.toList());
     }
 
     @Override
     public StudentResponse getStudentById(Long studentId) {
-         Student student = studentRepository.findByIdAndActiveTrue(studentId)
+        Student student = studentRepository.findByIdAndActiveTrue(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         return new StudentResponse(
                 student.getId(),
@@ -447,8 +460,7 @@ public class AdminServiceImpl implements AdminService {
                 student.getParentEmail(),
                 student.getClassEntity() != null ? student.getClassEntity().getId() : null,
                 student.getClassEntity() != null ? student.getClassEntity().getClassName() : null,
-                student.getClassEntity() != null ? student.getClassEntity().getSection() : null
-        );
+                student.getClassEntity() != null ? student.getClassEntity().getSection() : null);
     }
 
     @Override
@@ -462,9 +474,9 @@ public class AdminServiceImpl implements AdminService {
         student.setRollNumber(req.getRollNumber());
         student.setPassword(passwordEncoder.encode(req.getPassword()));
         student.setActive(true);
-        
+
         // ✅ FIX: Use Enum if Role is defined as Enum in Student entity
-        student.setRole(User.Role.STUDENT); 
+        student.setRole(User.Role.STUDENT);
 
         ClassEntity classEntity = classRepository.findById(req.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found"));
@@ -481,8 +493,7 @@ public class AdminServiceImpl implements AdminService {
                 student.getParentEmail(),
                 classEntity.getId(),
                 classEntity.getClassName(),
-                classEntity.getSection()
-        );
+                classEntity.getSection());
     }
 
     @Override
@@ -518,8 +529,7 @@ public class AdminServiceImpl implements AdminService {
                 student.getParentEmail(),
                 student.getClassEntity() != null ? student.getClassEntity().getId() : null,
                 student.getClassEntity() != null ? student.getClassEntity().getClassName() : null,
-                student.getClassEntity() != null ? student.getClassEntity().getSection() : null
-        );
+                student.getClassEntity() != null ? student.getClassEntity().getSection() : null);
     }
 
     @Override
@@ -527,10 +537,10 @@ public class AdminServiceImpl implements AdminService {
     public void deleteStudent(Long studentId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-        student.setActive(false); 
+        student.setActive(false);
         studentRepository.save(student);
     }
-    
+
     @Override
     public List<ClassEntity> getAllClasses() {
         return classRepository.findAll();
@@ -593,8 +603,7 @@ public class AdminServiceImpl implements AdminService {
                     student.getClassEntity().getId(),
                     student.getClassEntity().getClassName(),
                     student.getClassEntity().getSection(),
-                    student.getClassEntity().getAcademicYear()
-            ));
+                    student.getClassEntity().getAcademicYear()));
         }
         return response;
     }
